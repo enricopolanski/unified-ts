@@ -1,7 +1,8 @@
 'use strict'
 
 var test = require('tape')
-var unified = require('..')
+// var unified = require('../')
+// var unified = require('../src/index')
 
 test('unified()', function (t) {
   var count

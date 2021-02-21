@@ -1,6 +1,3 @@
-'use strict'
-
-var bail = require('bail')
 var buffer = require('is-buffer')
 var extend = require('extend')
 var plain = require('is-plain-obj')
@@ -8,9 +5,8 @@ var trough = require('trough')
 var vfile = require('vfile')
 
 // Expose a frozen processor.
-module.exports = unified().freeze()
+export const frozenProcessor = unified().freeze()
 
-var own = {}.hasOwnProperty
 
 // Process pipeline.
 var pipeline = trough()
@@ -52,7 +48,7 @@ function pipelineStringify(p, ctx) {
 function unified() {
   var attachers = []
   var transformers = trough()
-  var namespace = {}
+  var namespace: Record<string, unknown> = {}
   var freezeIndex = -1
   var frozen
 
@@ -132,7 +128,7 @@ function unified() {
 
   // Data management.
   // Getter / setter for processor-specific informtion.
-  function data(key, value) {
+  function data(key: string, value) {
     if (typeof key === 'string') {
       // Set `key`.
       if (arguments.length === 2) {
@@ -142,7 +138,7 @@ function unified() {
       }
 
       // Get `key`.
-      return (own.call(namespace, key) && namespace[key]) || null
+      return (key in namespace && namespace[key]) || null
     }
 
     // Set space.
@@ -234,7 +230,7 @@ function unified() {
 
         entry[1] = value
       } else {
-        attachers.push([...arguments])
+        attachers.push(...arguments)
       }
     }
   }
@@ -314,7 +310,7 @@ function unified() {
     function done(error, tree) {
       complete = true
       result = tree
-      bail(error)
+      if (error) throw error
     }
   }
 
@@ -386,7 +382,7 @@ function unified() {
 
     function done(error) {
       complete = true
-      bail(error)
+      if (error) throw error
     }
   }
 }
