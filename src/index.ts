@@ -48,9 +48,9 @@ function pipelineStringify(p, ctx) {
 function unified() {
   var attachers = []
   var transformers = trough()
-  var namespace: Record<string, unknown> = {}
-  var freezeIndex = -1
-  var frozen
+  const namespace: Record<string, unknown> = {}
+  let freezeIndex = -1
+  let frozen: boolean
 
   // Data management.
   processor.data = data
@@ -128,7 +128,7 @@ function unified() {
 
   // Data management.
   // Getter / setter for processor-specific informtion.
-  function data(key: string, value) {
+  function data(key: string, value: unknown) {
     if (typeof key === 'string') {
       // Set `key`.
       if (arguments.length === 2) {
