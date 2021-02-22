@@ -1,4 +1,4 @@
-var buffer = require('is-buffer')
+import { isBuffer } from "./utils/isBuffer"
 var extend = require('extend')
 var plain = require('is-plain-obj')
 var trough = require('trough')
@@ -8,7 +8,7 @@ var vfile = require('vfile')
 export const frozenProcessor = unified().freeze()
 
 
-// Process pipeline.
+// Process pipeline.∏
 var pipeline = trough()
   .use(pipelineParse)
   .use(pipelineRun)
@@ -37,7 +37,7 @@ function pipelineStringify(p, ctx) {
 
   if (result === undefined || result === null) {
     // Empty.
-  } else if (typeof result === 'string' || buffer(result)) {
+  } else if (typeof result === 'string' || isBuffer(result)) {
     ctx.file.contents = result
   } else {
     ctx.file.result = result
